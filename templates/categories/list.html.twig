@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Liste des tricks de la categorie {{ category.name }}
+{% endblock %}
+
+
+{% block body %}
+{{ dump(tricks)}}
+    <main class="container">
+        <section class="row">
+            <div class="col-12">
+                <h1>Liste des tricks de la categorie {{ category.name }}</h1>
+            </div>
+
+            {% for trick  in tricks['tricks'] %}
+                {{trick.name}}
+                <div class="col-3">
+                    <article class="card">                   
+                        <div class="card-body">
+                            <h2 class="card-title">{{ trick.name }}</h2> 
+                            <p class="card-text">{{ trick.description }}</p>                       
+                            <a href="#" class="btn btn-primary">Voir le détail</a>
+                        </div>
+                    </article>
+                </div>
+            {% endfor %}
+        </section>
+    </main>
+{% endblock %}
