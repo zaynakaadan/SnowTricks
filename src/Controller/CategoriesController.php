@@ -18,6 +18,7 @@ class CategoriesController extends AbstractController
     public function list(Categories $category): Response
     {
         // je vais chercher la liste des tricks de la catégorie
+        
         $tricks = $category->getTricks();
         return $this->render('categories/list.html.twig', compact('category', 'tricks'));
     }
