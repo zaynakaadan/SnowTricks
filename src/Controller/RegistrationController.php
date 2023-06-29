@@ -45,7 +45,8 @@ class RegistrationController extends AbstractController
             $mail->send(
                 'no-replay@monsite.com',
                 $user->getEmail(),
-                'Activation de votre compte sur le site snowtricks','register',
+                'Activation de votre compte sur le site snowtricks',
+                'register',
                 compact('user')
                 
             );
