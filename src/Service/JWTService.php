@@ -28,7 +28,15 @@ class JWTService
         $base64Payload = str_replace(['+', '/', '='], ['-', '_', ''] , $base64Payload);
 
         //génère la signature
-        
+        $secret = base64_encode($secret);
+
+        $signature = hash_hmac('sha256', $base64Header . '.' . $base64Payload, $secret, true);
+
+        $base64Signature = base64_encode($signature);
+
+        $base64Signature = str_replace(['+', '/', '='], ['-', '_', ''] , $base64Signature);
+
+
 
         return $jwt;
     }
