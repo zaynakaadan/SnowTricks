@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Users;
 use App\Form\RegistrationFormType;
 use App\Security\UsersAuthenticator;
+use App\Service\JWTService;
 use App\Service\SendMailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,7 +23,7 @@ class RegistrationController extends AbstractController
      */
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher,
     UserAuthenticatorInterface $userAuthenticator, UsersAuthenticator $authenticator,
-    EntityManagerInterface $entityManager, SendMailService $mail): Response
+    EntityManagerInterface $entityManager, SendMailService $mail, JWTService $jwt): Response
     {
         $user = new Users();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -41,13 +42,29 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
             // do anything else you need here, like send an email
 
+            //génère le JWT de l'utilisateur
+            //crée le Header
+            $header = [
+                'alg' => 'HS256',
+                'typ' => 'JWT'
+            ];
+
+            //crée le payload
+            $payload = [
+                'user_id' => $user->getId()
+            ];
+
+            //génère le token
+            $token = $jwt->generate($header, $payload, $this->getParameter('app.jwtsecret'));
+            //dd($token);
+            
             //j'envoie un mail
             $mail->send(
                 'no-replay@monsite.com',
                 $user->getEmail(),
                 'Activation de votre compte sur le site snowtricks',
                 'register',
-                compact('user')
+                compact('user', 'token')
                 
             );
 
@@ -62,4 +79,15 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/verif/{token}", name="verify_user")
+     */
+    public function verifyUser($token): Response
+    {
+        dd($token);
+    }
+
+
+
 }
