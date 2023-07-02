@@ -60,4 +60,15 @@ class JWTService
         ) === 1;
 
     }
+
+    //Récupère le payload
+    public function getPayload(string $token): array
+    {
+        //Démonte le token
+        $array = explode('.', $token);
+
+        //Décode le payload
+        $payload = json_decode(base64_decode($array[1]), true);
+            return $payload;
+    }
 }

@@ -85,7 +85,8 @@ class RegistrationController extends AbstractController
      */
     public function verifyUser($token, JWTService $jwt): Response
     {
-        dd($jwt->isValid($token));
+        //dd($jwt->isValid($token));
+        dd($jwt->getpayload($token));
     }
 
 
