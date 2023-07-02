@@ -49,4 +49,15 @@ class JWTService
 
         return $jwt;
     }
+
+    //véifie que le token est valide (correctement formé)
+
+    public function isValid(string $token): bool
+    {
+        return preg_match(
+            '/^[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+$/',
+            $token
+        ) === 1;
+
+    }
 }
