@@ -114,6 +114,56 @@ class RegistrationController extends AbstractController
         return $this->redirectToRoute('app_login');
     }
 
+    /**
+     * @Route("/renvoiverif", name="resend_verif")
+     */
+    public function resendVerif(JWTService $jwt, SendMailService $mail, UsersRepository $usersRepository): Response
+    {
+        // Récupère l'user connecté
+        $user = $this->getUser();
+        // si je n'a pas de l'user connecté
+        if(!$user){
+            $this->addFlash('danger', 'Vous devez être connecté pour accéder à cette page');
+            return $this->redirectToRoute('app_login');
+        }
 
+        // si l'utilisateur est déja vérifié 
+        if($user->getIsVerified()){
+            $this->addFlash('warning', 'Cet utilisateur est déja activé');
+            return $this->redirectToRoute('profile_index');
+        }
+         //génère le JWT de l'utilisateur
+            //crée le Header
+            $header = [
+                'alg' => 'HS256',
+                'typ' => 'JWT'
+            ];
+
+            //crée le payload
+            $payload = [
+                'user_id' => $user->getId()
+            ];
+
+            //génère le token
+            $token = $jwt->generate($header, $payload, $this->getParameter('app.jwtsecret'));
+            //dd($token);
+            
+            //j'envoie un mail
+            $mail->send(
+                'no-replay@monsite.com',
+                $user->getEmail(),
+                'Activation de votre compte sur le site snowtricks',
+                'register',
+                compact('user', 'token')
+                
+            );
+            $this->addFlash('success', 'Email de vérification envoyé');
+            return $this->redirectToRoute('profile_index');
+
+
+    } 
+
+
+    
 
 }
