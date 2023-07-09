@@ -3,15 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Tricks;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
-     * @Route("/tricks", name="tricks_")
-     */
-    class TricksController extends AbstractController
-    {    
+ * @Route("/tricks", name="tricks_")
+ */
+class TricksController extends AbstractController
+{    
     /**        
      * @Route("/", name="index")
      */
@@ -25,8 +26,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
      * @Route("/{slug}", name="details")
      */      
       public function details(Tricks $trick): Response
+      {return;
       {
-
+        
         return $this->render('tricks/details.html.twig', compact('trick'));
       }
     }    

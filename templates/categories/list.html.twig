@@ -14,13 +14,13 @@ Liste des tricks de la categorie {{ category.name }}
 
 
             {% for trick  in tricks %}
-                {{trick.name}}
+        
                 <div class="col-3 mb-3">
                     <article class="card">
                         <div class="card-body">
                             <h2 class="card-title">{{ trick.name }}</h2>
                             <p class="card-text">{{ trick.description }}</p>
-                            <a href="#" class="btn btn-primary">Voir le détail</a>
+                            <a href="{{ path('tricks_details', {"slug": trick.slug}) }}" class="btn btn-primary">Voir le détail</a>
                         </div>
                     </article>
                 </div>

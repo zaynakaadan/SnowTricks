@@ -35,10 +35,7 @@ class Tricks
     private $description;
 
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="Tricks")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    
     /**
      * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="tricks")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
