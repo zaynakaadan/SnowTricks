@@ -13,7 +13,7 @@ Liste des tricks de la categorie {{ category.name }}
             </div>
 
 
-            {% for trick  in tricks %}
+            {% for trick  in tricks.data %}
         
                 <div class="col-3 mb-3">
                     <article class="card">
@@ -25,6 +25,11 @@ Liste des tricks de la categorie {{ category.name }}
                     </article>
                 </div>
             {% endfor %}
+            {% set path = 'categories_list' %}
+            {% set slug = category.slug %}
+            {% set pages = tricks.pages %}
+            {% set currentPage = tricks.page %}
+            {% include "_partials/_pagination.html.twig" %}
         </section>
     </main>
 {% endblock %}

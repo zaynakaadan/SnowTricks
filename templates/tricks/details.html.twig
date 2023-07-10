@@ -12,14 +12,16 @@
                     
                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
                     <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    {% for iteration in 1..trick.images|length %}
+                      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ interation - 1 }}" {{ (loop.first) ? 'class="active" aria-current="true"' : '' }} aria-label="Slide {{ interation }}"></button>
+                    {% endfor %}
+                        
+                        
                     </div>
                         <div class="carousel-inner">
                             {% for image in trick.images %}
-                                 <div class="carousel-item {{ (loop.fist) ? 'active' : '' }}">
-                                    <img src="{{ asset('assets/img/') ~ image.name }}" class="d-block w-100" alt="...">
+                                 <div class="carousel-item {{ (loop.first) ? 'active' : '' }}">
+                                    <img src="{{ asset('assets/img/') ~ image.name }}" class="d-block w-100" alt="{{ trick.name }}">
                                  </div>
                             {% endfor %}
                         </div>       

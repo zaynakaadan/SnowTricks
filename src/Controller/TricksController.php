@@ -21,12 +21,11 @@ class TricksController extends AbstractController
             return $this->render('tricks/index.html.twig');
         }
 
-        //chercher un trick particulier
+
     /**        
      * @Route("/{slug}", name="details")
      */      
       public function details(Tricks $trick): Response
-      {return;
       {
         
         return $this->render('tricks/details.html.twig', compact('trick'));
