@@ -48,7 +48,7 @@ class Tricks
     private $images;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="Tricks")
+     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="trick")
      */
     private $comments;
 

@@ -26,12 +26,12 @@ class Comments
 
     
     /**
-     * @ORM\ManyToOne(targetEntity=Tricks::class, inversedBy="Comments")
+     * @ORM\ManyToOne(targetEntity=Tricks::class, inversedBy="comments")
      */
     private $trick;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="Comments")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;

@@ -21,6 +21,7 @@
                         <div class="carousel-inner">
                             {% for image in trick.images %}
                                  <div class="carousel-item {{ (loop.first) ? 'active' : '' }}">
+                                 
                                     <img src="{{ asset('assets/img/') ~ image.name }}" class="d-block w-100" alt="{{ trick.name }}">
                                  </div>
                             {% endfor %}
@@ -40,7 +41,13 @@
             <div class="col-6">
                 <p>{{ trick.description }}</p>
                 <p>Catégorie : {{ trick.category.name }}</p>
-
+                    {#<p >
+                        <small>
+                            <strong>
+                                Auteur : {{ trick.user.username}}, le {{ trick.CreatedAtTrait | date('d/m/Y à H:i') }}
+                            </strong>
+                        </small>
+                    </p>#}
 
             </div>
         </section>
