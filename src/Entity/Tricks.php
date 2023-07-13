@@ -35,7 +35,7 @@ class Tricks
     private $description;
 
 
-    
+
     /**
      * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="tricks")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
@@ -43,7 +43,7 @@ class Tricks
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity="Images", mappedBy="Tricks", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Images::class, mappedBy="trick", orphanRemoval=true)
      */
     private $images;
 

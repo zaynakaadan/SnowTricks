@@ -9,14 +9,14 @@
                 <h1>{{ trick.name }}</h1>
             </div>
             <div class="col-6">
-                    
+
                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
                     <div class="carousel-indicators">
                     {% for iteration in 1..trick.images|length %}
-                      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ interation - 1 }}" {{ (loop.first) ? 'class="active" aria-current="true"' : '' }} aria-label="Slide {{ interation }}"></button>
+                      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ iteration - 1 }}" {{ (loop.first) ? 'class="active" aria-current="true"' : '' }} aria-label="Slide {{ iteration }}"></button>
                     {% endfor %}
-                        
-                        
+
+
                     </div>
                         <div class="carousel-inner">
                             {% for image in trick.images %}
@@ -24,9 +24,9 @@
                                     <img src="{{ asset('assets/img/') ~ image.name }}" class="d-block w-100" alt="{{ trick.name }}">
                                  </div>
                             {% endfor %}
-                        </div>       
-                                                                         
-                        
+                        </div>
+
+
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Previous</span>
@@ -43,8 +43,8 @@
 
 
             </div>
-        </section>   
-    </main>     
+        </section>
+    </main>
 
 
 {% endblock %}
