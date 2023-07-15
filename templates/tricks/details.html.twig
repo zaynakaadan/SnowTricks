@@ -22,7 +22,7 @@
                             {% for image in trick.images %}
                                  <div class="carousel-item {{ (loop.first) ? 'active' : '' }}">
                                  
-                                    <img src="{{ asset('assets/img/') ~ image.name }}" class="d-block w-100" alt="{{ trick.name }}">
+                                    <img src="{{ asset('assets/img/tricks/mini/300x300-') ~ image.name }}" class="d-block w-100" alt="{{ trick.name }}">
                                  </div>
                             {% endfor %}
                         </div>

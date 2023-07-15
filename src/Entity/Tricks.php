@@ -43,7 +43,7 @@ class Tricks
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity=Images::class, mappedBy="trick", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Images::class, mappedBy="trick", orphanRemoval=true, cascade={"persist"})
      */
     private $images;
 

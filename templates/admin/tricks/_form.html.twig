@@ -1,6 +1,22 @@
 {{ form_start(trickForm) }}
     {{ form_row(trickForm.name) }}
     {{ form_row(trickForm.description) }}
+
     {{ form_row(trickForm.category) }}
+
+
+    {# Afficher les images si je suis en édition#}
+    {% if app.request.attributes.get('_route') == 'admin_tricks_edit' %}
+        <h2>Images</h2>
+        {% for image in trick.images %}
+            <div>
+                <img src="{{ asset('assets/img/tricks/mini/300x300-' ~ image.name ) }}" alt="Image" width="150">
+                <a href="{{ path('admin_tricks_delete_image', {id: image.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ image.id)}}">Supprimer
+                </a>
+            </div>
+        {% endfor %}
+    {% endif %}
+        {{ form_row(trickForm.images) }}
+
     <button type="submit" class="btn btn-primary">Enregistrer</button>
 {{ form_end(trickForm) }}

@@ -6,6 +6,7 @@ use App\Entity\Categories;
 use App\Entity\Tricks;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,6 +24,12 @@ class TricksFormType extends AbstractType
              'label' => 'Catégorie', 
  
             ])
+        ->add('images', FileType::class, [
+            'label' => false,
+            'multiple' => true,
+            'mapped' => false,
+            'required' => false,
+        ] )    
             //->add('user')
         ;
     }
