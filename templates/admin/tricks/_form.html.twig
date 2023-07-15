@@ -1,9 +1,9 @@
 {{ form_start(trickForm) }}
     {{ form_row(trickForm.name) }}
     {{ form_row(trickForm.description) }}
-
     {{ form_row(trickForm.category) }}
 
+    {# {{ form_row(trickForm.created_at) }} #}
 
     {# Afficher les images si je suis en édition#}
     {% if app.request.attributes.get('_route') == 'admin_tricks_edit' %}
