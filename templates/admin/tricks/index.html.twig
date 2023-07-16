@@ -13,9 +13,9 @@
                         <tr>
                             <th>ID</th>
                             <th>Photo</th>
-                            <th>Nom</th>
-                            <th>Prénom</th>
+                            <th>Auteur</th>
                             <th>Titre</th>
+                            <th>Publié le</th>
                             <th>Catégorie</th>
                             <th>Actions</th>
                         </tr>
@@ -24,12 +24,17 @@
                         {% for trick in tricks %}
                             <tr>
                                 <td>{{ trick.id }}</td>
-                                <td>{{ trick.images[0].name }}</td>
-                                <td>{{ trick.user.lastname }}</td>
-                                <td>{{ trick.user.firstname }}</td> 
-                                <td>{{ trick.name }}</td>                
+                                <td><img src="{{ asset('assets/img/tricks/mini/300x300-' ~ trick.images[0].name ) }}" alt="{{ trick.name }}" class="img-thumbnail"></td>
+                                <td>{{ trick.user.lastname }} {{ trick.user.firstname }}</td>                                 
+                                <td>{{ trick.name }}</td>  
+                                <td>{{ trick.createdAt | date('d/m/Y à H:i') }}</td>        
                                 <td>{{ trick.category.name }}</td>
-                                <td></td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                    <a href="{{ path('admin_tricks_edit', {id: trick.id } )}}" class="btn btn-success">Modifier</a>
+                                    <a href="{{ path('admin_tricks_delete', {id: trick.id } )}}" class="btn btn-danger">suprrimer</a>
+                                    </div>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

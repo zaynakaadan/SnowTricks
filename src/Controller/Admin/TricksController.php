@@ -9,7 +9,6 @@ use App\Repository\TricksRepository;
 use App\Service\PictureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\BrowserKit\Request as BrowserKitRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -152,11 +151,18 @@ class TricksController extends AbstractController
     /**
      * @Route("/suppression/{id}", name="delete")
      */
-    public function delete(Tricks $trick): Response
+    public function delete(Tricks $trick, EntityManagerInterface $entityManager): Response
     {
         // Vérifie si l'utilisateur peut supprimer avec le Voter
-        $this->denyAccessUnlessGranted('TRICK_DELETE', $trick);
-        return $this->render('admin/tricks/index.html.twig');
+         $this->denyAccessUnlessGranted('TRICK_DELETE', $trick);
+         
+        // Remove the trick entity
+            $entityManager->remove($trick);
+            $entityManager->flush();
+            $this->addFlash('success', 'Trick à été supprimé ');
+          
+         return $this->redirectToRoute('admin_tricks_index');  
+
     }
 /**
      * @Route("/suppression/image/{id}", name="delete_image", methods={"DELETE"})
