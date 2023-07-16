@@ -39,16 +39,17 @@
 </div>
             </div>
             <div class="col-6">
-                <p>{{ trick.description }}</p>
+                <p>Description : {{ trick.description }}</p>
                 <p>Catégorie : {{ trick.category.name }}</p>
-                    {#<p >
-                        <small>
-                            <strong>
-                                Auteur : {{ trick.user.username}}, le {{ trick.CreatedAtTrait | date('d/m/Y à H:i') }}
-                            </strong>
-                        </small>
-                    </p>#}
 
+                <p>
+                    <small>
+                        <strong> Auteur :
+                            {{ trick.user.lastname }}
+                            {{ trick.user.firstname }}, le {{ trick.createdAt | date('d/m/Y à H:i') }}
+                        </strong>
+                    </small>
+                </p>                   
             </div>
         </section>
     </main>
