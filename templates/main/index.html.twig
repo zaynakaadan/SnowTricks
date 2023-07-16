@@ -1,15 +1,21 @@
 {% extends 'base.html.twig' %}
 
+
 {% block body %}
-    <main class="container">
+<header class="bg-image"style="background-image: url('/assets/img/welcome.jpeg'); ">
+		<div class="contents-header text-center">
+			<h1 class="header-title text-center pt-3">Site SnowTricks</h1>            
+			    <strong class="sub-title ">
+				    BORN TO SNOWBOARD
+			    </strong>
+		</div>
+</header>
+    <main class="container homepage">
         <section class="row">
-            <div class="col-12">
-                    <h1>Site SnowTricks</h1>
-                    <p>BORN TO SNOWBOARD</p>
-            </div>
+
             {% for category in categories %}
 
-                <div class="col-3">
+                <div class="col-3 mt-3">
                     <div class="card h-100">                   
                         <div class="card-body">
                             <h2 class="card-title">{{ category.name }}</h2>                        
@@ -20,6 +26,9 @@
             {% endfor %}     
         </section>
     </main>
+    <i class="fas fa-arrow-up fa-3x" style="display: block;"></i>
+
+
 
 
 
