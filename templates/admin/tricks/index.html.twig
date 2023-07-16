@@ -1,7 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Administration des tricks!{% endblock %}
+{% block title %}Liste des tricks{% endblock %}
 
 {% block body %}
-    <h1>Administration des tricks</h1>
+    <div class="container">
+        <div class="row">
+            {% include "_partials/_adminnav.html.twig" %}
+            <main class="col-9 border border-light bg-white p-2">
+                <h1>Liste des tricks</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Photo</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Titre</th>
+                            <th>Catégorie</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for trick in tricks %}
+                            <tr>
+                                <td>{{ trick.id }}</td>
+                                <td>{{ trick.images[0].name }}</td>
+                                <td>{{ trick.user.lastname }}</td>
+                                <td>{{ trick.user.firstname }}</td> 
+                                <td>{{ trick.name }}</td>                
+                                <td>{{ trick.category.name }}</td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </main>
+        </div>
+    </div>
+
 {% endblock %}

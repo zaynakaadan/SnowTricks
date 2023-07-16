@@ -32,6 +32,7 @@ class Categories
      */
     private $tricks;
 
+   
 
     public function __construct()
     {
@@ -84,4 +85,5 @@ class Categories
 
         return $this;
     }
+    
 }

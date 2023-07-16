@@ -21,6 +21,10 @@ class TricksRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Tricks::class);
     }
+    public function findAll(): array
+    {
+        return parent::findAll();
+    }
 
     public function findTricksPaginated(int $page, string $slug, int $limit = 6): array
     {
