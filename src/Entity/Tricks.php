@@ -18,6 +18,7 @@ class Tricks
     use CreatedAtTrait;
     use SlugTrait;
 
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -179,5 +180,11 @@ class Tricks
         $this->user = $user;
 
         return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        // Convert the DateTime object to DateTimeImmutable if it exists
+        return $this->created_at instanceof \DateTimeInterface ? \DateTimeImmutable::createFromMutable($this->created_at) : null;
     }
 }
