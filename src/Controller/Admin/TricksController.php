@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Images;
 use App\Entity\Tricks;
 use App\Form\TricksFormType;
+use App\Repository\TricksRepository;
 use App\Service\PictureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
     /**
@@ -23,9 +25,11 @@ class TricksController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index(): Response
+    public function index(TricksRepository $tricksRepository, UserInterface $ui): Response
     {
-        return $this->render('admin/tricks/index.html.twig');
+        $tricks = $tricksRepository->findAll();
+        $user = $ui->getUserIdentifier();
+        return $this->render('admin/tricks/index.html.twig', compact('tricks','user'));
     }
 
     /**
