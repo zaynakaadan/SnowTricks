@@ -12,6 +12,7 @@ Liste des tricks de la categorie {{ category.name }}
                 <h1>Liste des tricks de la categorie {{ category.name }}</h1>
             </div>
 
+{% if tricks is not null and tricks.data is defined and tricks.data|length > 0 %}
 
             {% for trick  in tricks.data %}
         
@@ -31,6 +32,9 @@ Liste des tricks de la categorie {{ category.name }}
             {% set pages = tricks.pages %}
             {% set currentPage = tricks.page %}
             {% include "_partials/_pagination.html.twig" %}
+            {% else %}
+             <strong>Il n'y a pas de trick dans cette catégorie.</strong>
+            {% endif %}
         </section>
     </main>
 {% endblock %}
