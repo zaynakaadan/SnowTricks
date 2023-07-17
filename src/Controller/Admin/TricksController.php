@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Images;
 use App\Entity\Tricks;
 use App\Form\TricksFormType;
+use App\Repository\CommentsRepository;
 use App\Repository\TricksRepository;
 use App\Service\PictureService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -151,12 +152,17 @@ class TricksController extends AbstractController
     /**
      * @Route("/suppression/{id}", name="delete")
      */
-    public function delete(Tricks $trick, EntityManagerInterface $entityManager): Response
+    public function delete(Tricks $trick, EntityManagerInterface $entityManager, CommentsRepository $commentsRepository): Response
     {
         // Vérifie si l'utilisateur peut supprimer avec le Voter
          $this->denyAccessUnlessGranted('TRICK_DELETE', $trick);
          
-        // Remove the trick entity
+         // Supprimer les commentaires associés
+         $comments = $commentsRepository->findBy(['trick' => $trick]);
+         foreach ($comments as $comment) {
+           $entityManager->remove($comment);
+         }
+        // Supprimer le trick entity
             $entityManager->remove($trick);
             $entityManager->flush();
             $this->addFlash('success', 'Trick à été supprimé ');

@@ -6,6 +6,7 @@ use App\Entity\Comments;
 use App\Entity\MyTrait\CreatedAtTrait;
 use App\Entity\Tricks;
 use App\Form\CommentsFormType;
+use App\Repository\CommentsRepository;
 use App\Repository\TricksRepository;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,7 +37,8 @@ class TricksController extends AbstractController
      * @Route("/{slug}", name="details")
      */      
       public function details($slug, Tricks $trick, UserInterface $ui, Request $request, EntityManagerInterface $em,TricksRepository $tricksRepository): Response
-      {    
+      {   
+
         $trick = $tricksRepository->findOneBy(['slug' => $slug]); 
 
         if(!$trick){
@@ -75,4 +77,5 @@ class TricksController extends AbstractController
            'commentForm' => $commentForm->createView()
         ]);
      }
+     
  }    
