@@ -10,10 +10,12 @@ use App\Repository\TricksRepository;
 use App\Service\PictureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException as ExceptionAccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -36,7 +38,8 @@ class TricksController extends AbstractController
      * @Route("/ajout", name="add")
      */
     public function add(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, PictureService $pictureService): Response
-    {
+    { 
+        try {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         // Crée un nouveau trick
@@ -88,9 +91,13 @@ class TricksController extends AbstractController
             return $this->redirectToRoute('admin_tricks_index');
 
         }
-
         return $this->renderForm('admin/tricks/add.html.twig', compact('trickForm'));
-    }
+    } catch (AccessDeniedException $e) {
+        $this->addFlash('danger', 'Vous n\'êtes pas autorisé à ajouter le trick ');
+        return $this->redirectToRoute('admin_tricks_index');  
+    } 
+}
+
     /**
      * @Route("/edition/{id}", name="edit")
      */
@@ -154,8 +161,11 @@ class TricksController extends AbstractController
      */
     public function delete(Tricks $trick, EntityManagerInterface $entityManager, CommentsRepository $commentsRepository): Response
     {
+        try {
         // Vérifie si l'utilisateur peut supprimer avec le Voter
          $this->denyAccessUnlessGranted('TRICK_DELETE', $trick);
+
+        
          
          // Supprimer les commentaires associés
          $comments = $commentsRepository->findBy(['trick' => $trick]);
@@ -168,7 +178,10 @@ class TricksController extends AbstractController
             $this->addFlash('success', 'Trick à été supprimé ');
           
          return $this->redirectToRoute('admin_tricks_index');  
-
+        } catch (AccessDeniedException $e) {
+            $this->addFlash('danger', 'Vous n\'êtes pas autorisé à supprimer le trick ');
+            return $this->redirectToRoute('admin_tricks_index');  
+        } 
     }
 /**
      * @Route("/suppression/image/{id}", name="delete_image", methods={"DELETE"})

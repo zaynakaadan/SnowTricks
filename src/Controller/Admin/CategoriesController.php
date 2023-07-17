@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
     /**
      * @Route("/admin/categories", name="admin_categories_")
@@ -30,6 +31,7 @@ class CategoriesController extends AbstractController
      */
     public function add(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
+        try{
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         // Crée un nouveau category
         $category = new Categories();
@@ -64,5 +66,9 @@ class CategoriesController extends AbstractController
 
         return $this->renderForm('admin/categories/add.html.twig', compact('categoryForm'));
     
-}
+    } catch (AccessDeniedException $e) {
+        $this->addFlash('danger', 'Vous n\'êtes pas autorisé à ajouter la catégorie ');
+        return $this->redirectToRoute('admin_categories_index');  
+    }
+} 
 }
