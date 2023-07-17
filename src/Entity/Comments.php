@@ -39,6 +39,7 @@ class Comments
     public function __construct()
     {        
         $this->created_at = new \DateTimeImmutable();
+        
     }
     public function getId(): ?int
     {
@@ -81,5 +82,11 @@ class Comments
         $this->user = $user;
 
         return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        // Convert the DateTime object to DateTimeImmutable if it exists
+        return $this->created_at instanceof \DateTimeInterface ? \DateTimeImmutable::createFromMutable($this->created_at) : null;
     }
 }

@@ -4,55 +4,67 @@
 
 {% block body %}
     <main class="container">
-        <section class="row">
+        <div class="row mt-4">
             <div class="col-12">
                 <h1>{{ trick.name }}</h1>
             </div>
             <div class="col-6">
-
-                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
-                    {% for iteration in 1..trick.images|length %}
-                      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ iteration - 1 }}" {{ (loop.first) ? 'class="active" aria-current="true"' : '' }} aria-label="Slide {{ iteration }}"></button>
-                    {% endfor %}
-
-
+                        {% for iteration in 0..trick.images|length - 1 %}
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ iteration }}" {% if loop.first %}class="active" aria-current="true"{% endif %} aria-label="Slide {{ iteration + 1 }}"></button>
+                        {% endfor %}
                     </div>
-                        <div class="carousel-inner">
-                            {% for image in trick.images %}
-                                 <div class="carousel-item {{ (loop.first) ? 'active' : '' }}">
-                                 
-                                    <img src="{{ asset('assets/img/tricks/mini/300x300-') ~ image.name }}" class="d-block w-100" alt="{{ trick.name }}">
-                                 </div>
-                            {% endfor %}
-                        </div>
-
-
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
+                    <div class="carousel-inner">
+                        {% for image in trick.images %}
+                            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                <img src="{{ asset('assets/img/tricks/mini/300x300-' ~ image.name) }}" class="d-block w-100" alt="{{ trick.name }}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
             </div>
             <div class="col-6">
                 <p>Description : {{ trick.description }}</p>
                 <p>Catégorie : {{ trick.category.name }}</p>
-
                 <p>
                     <small>
-                        <strong> Auteur :
-                            {{ trick.user.lastname }}
-                            {{ trick.user.firstname }}, le {{ trick.createdAt | date('d/m/Y à H:i') }}
-                        </strong>
+                        <strong>Auteur :</strong>
+                        {{ trick.user.lastname }} {{ trick.user.firstname }}, le {{ trick.createdAt | date('d/m/Y à H:i') }}
                     </small>
-                </p>                   
+                </p>
             </div>
-        </section>
+        </div>
+        <div class="row mt-4">
+            <div class="col-12 col-md-6">
+                <h2>Liste des commentaires</h2>
+                {% for comment in trick.comments %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ comment.content }}</h5>
+                            <p class="card-text">Publié par {{ comment.user.lastname }} {{ comment.user.firstname }}, le {{ comment.createdAt | date('d/m/Y à H:i') }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-12 col-md-6">
+                <h2>Ajouter un commentaire</h2>
+                {{ form_start(commentForm) }}
+                <div class="mb-3">
+                    {{ form_label(commentForm.content, 'Commentaire', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(commentForm.content, {'attr': {'class': 'form-control', 'rows': 5}}) }}
+                </div>
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                {{ form_end(commentForm) }}
+            </div>
+        </div>
     </main>
-
-
 {% endblock %}

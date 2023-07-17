@@ -60,7 +60,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private $firstname;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="Users")
+     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="user")
      */
     private $comments;
 
