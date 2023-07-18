@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\DateTime;
-
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 /**
  * @Route("/tricks", name="tricks_")
  */
@@ -59,7 +59,9 @@ class TricksController extends AbstractController
         // Vérifie si le formulaire est soumis et valide
         if($commentForm->isSubmitted() && $commentForm->isValid()){
           //dd($comment);
-          
+          if (!$this->getUser()) {
+            throw new AccessDeniedException('Vous devez être connecté pour ajouter un commentaire.');
+        }
           $comment->setTrick($trick);
           $data = $commentForm->getData();
             // Attribuer l' utilisateur à la propriété de l'entité
