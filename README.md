@@ -8,22 +8,29 @@ Site permettant de gerer un annuaire de tricks de snowboard avec aspect communau
 ## Installation
 
 1. Git clone the project:
+
     `https://github.com/zaynakaadan/SnowTricks.git`
 
 2. Install libraries:
+
         `symfony console composer install`
 
 3. Create database:
-    a) Update DATABASE_URL .env file with your database configuration.
+
+    a. Update DATABASE_URL .env file with your database configuration.
+
                     `DATABASE_URL=mysql://db_user:db_password@127.0.0.1:3306/db_name`
         
-    b) Create database:
+    b. Create database:
+
                     `symfony console doctrine:database:create`
 
-    c) Create database structure:
+    c. Create database structure:
+
                     `symfony console make:migration`
 
-    d) Insert fictive data (optional):
+    d. Insert fictive data (optional):
+    
                     `symfony console doctrine:fixtures:load`
 
 4. Configure MAILER_DSN of Symfony mailer in .env file                                            
