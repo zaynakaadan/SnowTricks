@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Comments;
 use App\Entity\MyTrait\CreatedAtTrait;
 use App\Entity\Tricks;
+use App\Entity\Users;
 use App\Form\CommentsFormType;
 use App\Repository\CommentsRepository;
 use App\Repository\TricksRepository;
@@ -36,7 +37,7 @@ class TricksController extends AbstractController
     /**        
      * @Route("/{slug}", name="details")
      */      
-      public function details($slug, Tricks $trick, UserInterface $ui, Request $request, EntityManagerInterface $em,TricksRepository $tricksRepository): Response
+      public function details($slug, Tricks $trick,  Request $request, EntityManagerInterface $em,TricksRepository $tricksRepository): Response
       {   
 
         $trick = $tricksRepository->findOneBy(['slug' => $slug]); 
@@ -44,9 +45,9 @@ class TricksController extends AbstractController
         if(!$trick){
           throw new NotFoundHttpException('Pas de trick trouvée');
         }
-
+        $user = $this->getUser();
         $currentDateTime = $trick->getCreatedAt()->format('Y-m-d H:i:s');
-        $user = $ui->getUserIdentifier();    
+        //$user = $ui->getUserIdentifier();    
 
         //Partie commentaires
         $comment = new Comments;

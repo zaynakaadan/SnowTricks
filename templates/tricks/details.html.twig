@@ -32,9 +32,9 @@
                     </button>
                 </div>
             </div>
-            <div class="col-6">
-                <p>Description : {{ trick.description }}</p>
-                <p>Catégorie : {{ trick.category.name }}</p>
+            <div class="col-6 description-container">
+                <p><strong>Description :</strong> {{ trick.description }}</p>
+                <p><strong>Catégorie : </strong>{{ trick.category.name }}</p>
                 <p>
                     <small>
                         <strong>Auteur :</strong>
@@ -44,13 +44,18 @@
             </div>
         </div>
         <div class="row mt-4">
-            <div class="col-12 col-md-6">
-                <h2>Liste des commentaires</h2>
+            <div class="col-12 col-md-6 li-co" >
+                <h2>Liste des commentaires</h2>       
                 {% for comment in trick.comments %}
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h5 class="card-title">{{ comment.content }}</h5>
-                            <p class="card-text">Publié par {{ comment.user.lastname }} {{ comment.user.firstname }}, le {{ comment.createdAt | date('d/m/Y à H:i') }}</p>
+                            <div class="comment-container">
+                            <div class="avatar-container">
+                                <img src="https://i.pravatar.cc/300" alt="{{ comment.user.lastname }} Avatar" class="avatar-img">  
+                                </div>                              
+                                <h5 class="card-title comment-content">{{ comment.content }}</h5>
+                                <p class="card-text">Publié par {{ comment.user.lastname }} {{ comment.user.firstname }}, le {{ comment.createdAt | date('d/m/Y à H:i') }}</p>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
@@ -59,7 +64,7 @@
                 <h2>Ajouter un commentaire</h2>
                 {{ form_start(commentForm) }}
                 <div class="mb-3">
-                    {{ form_label(commentForm.content, 'Commentaire', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_label(commentForm.content, 'Connectez-vous pour écrire un commentaire', {'label_attr': {'class': 'form-label'}}) }}
                     {{ form_widget(commentForm.content, {'attr': {'class': 'form-control', 'rows': 5}}) }}
                 </div>
                 <button type="submit" class="btn btn-primary">Enregistrer</button>
@@ -67,4 +72,6 @@
             </div>
         </div>
     </main>
+      <!-- Include the custom scripts.js file -->
+    <script src="{{ asset('assets/js/scripts.js') }}"></script>
 {% endblock %}
