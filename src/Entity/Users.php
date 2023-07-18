@@ -80,6 +80,14 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private $resetToken;
 
 
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $avatarUrl;
+
+
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -287,6 +295,25 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
                 $trick->setRelation(null);
             }
         }
+
+        return $this;
+    }
+
+
+    /**
+     * Get the URL for the user's avatar.
+     */
+    public function getAvatarUrl(): ?string
+    {
+        return $this->avatarUrl;
+    }
+
+    /**
+     * Set the URL for the user's avatar.
+     */
+    public function setAvatarUrl(?string $avatarUrl): self
+    {
+        $this->avatarUrl = $avatarUrl;
 
         return $this;
     }
