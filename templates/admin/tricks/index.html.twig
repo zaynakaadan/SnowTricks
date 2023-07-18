@@ -28,7 +28,7 @@
                                 <td>{{ trick.user.lastname }} {{ trick.user.firstname }}</td>                                 
                                 <td>{{ trick.name }}</td>  
                                 <td>{{ trick.createdAt | date('d/m/Y à H:i') }}</td>        
-                                <td>{{ trick.category.name }}</td>
+
                                 <td>
                                     <div class="btn-group" role="group">
                                     <a href="{{ path('admin_tricks_edit', {id: trick.id } )}}" class="btn btn-success">Modifier</a>

@@ -22,6 +22,12 @@
                                 <td>{{ categorie.id }}</td>
                                 <td>{{ categorie.name }}</td>                
                                 <td>{{ categorie.slug }}</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                    <a href="{{ path('admin_categories_edit', {'id': categorie.id })}}" class="btn btn-success">Modifier</a>
+                                    <a href="{{ path('admin_categories_delete', {'id': categorie.id })}}" class="btn btn-danger">suprrimer</a>
+                                    </div>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

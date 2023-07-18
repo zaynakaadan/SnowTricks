@@ -41,6 +41,7 @@ security:
         ROLE_TRICK_ADMIN: ROLE_USER
         ROLE_ADMIN: ROLE_TRICK_ADMIN
         ROLE_SUPER_ADMIN: ROLE_ADMIN
+   
 
 when@test:
     security:
