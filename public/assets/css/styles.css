@@ -33,6 +33,30 @@ nav li a{
     right: 50px;
     color: #2f5e67;
 }
+.contents-header{
+
+    padding-right: 248px;
+
+}
+.header-title {
+    padding:50px;
+    color: black;
+    animation: slideInFromRight 1s ease-out;
+}
+.sub-title {
+    font-size: large;
+}
+@keyframes slideInFromRight {
+    0% {
+      opacity: 0;
+      transform: translateX(100px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
 .pt-3 {
     padding-top: 7rem !important;
   }
@@ -131,5 +155,6 @@ footer a {
         flex-direction: column; /* Stack elements vertically */
         align-items: center;
         max-width: 720px;
+  
     }
 }

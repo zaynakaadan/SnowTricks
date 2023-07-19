@@ -16,7 +16,7 @@ Liste des tricks de la categorie {{ category.name }}
 
             {% for trick  in tricks.data %}
         
-                <div class="col-3 mb-3">
+                <div class="col-12 col-md-6 col-lg-4 mt-3">
                     <article class="card h-100 mt-3">
                       <img src="{{ asset('assets/img/tricks/mini/300x300-' ~ trick.images[0].name ) }}" class="card-img-top" alt="{{ trick.name }}">
                         <div class="card-body">
