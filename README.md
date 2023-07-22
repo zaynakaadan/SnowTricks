@@ -37,11 +37,11 @@ Site permettant de gerer un annuaire de tricks de snowboard avec aspect communau
 4. Configure MAILER_DSN of Symfony mailer in .env file                                            
 
 ## Générer des fausses données
----
+
  Vous pouvez générer des fausses données grâce la fixture présente dans le projet avec la commande suivante :
 ```
 php bin/console doctrine:fixtures:load        
-        
+```        
     
 ## License
 
