@@ -1,4 +1,5 @@
 # Snowtricks
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/eb4971b6d9f84f128c90482a803b4fd0)](https://app.codacy.com/gh/zaynakaadan/SnowTricks/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 _Projet OpenClassrooms "PHP/Symfony app developper" _
 
 ## Description
@@ -34,7 +35,12 @@ Site permettant de gerer un annuaire de tricks de snowboard avec aspect communau
                     `symfony console doctrine:fixtures:load`
 
 4. Configure MAILER_DSN of Symfony mailer in .env file                                            
-        
+
+## Générer des fausses données
+---
+ Vous pouvez générer des fausses données grâce la fixture présente dans le projet avec la commande suivante :
+```
+php bin/console doctrine:fixtures:load        
         
     
 ## License
