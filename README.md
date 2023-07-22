@@ -40,7 +40,7 @@ Site permettant de gerer un annuaire de tricks de snowboard avec aspect communau
 
  Vous pouvez générer des fausses données grâce la fixture présente dans le projet avec la commande suivante :
 ```
-php bin/console doctrine:fixtures:load        
+symfony console doctrine:fixtures:load        
 ```        
     
 ## License
