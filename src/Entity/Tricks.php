@@ -27,7 +27,7 @@ class Tricks
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank(message= "Le nom du trick ne peut pas être vide")
      */
     private $name;
