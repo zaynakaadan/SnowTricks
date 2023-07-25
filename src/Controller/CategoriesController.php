@@ -24,7 +24,7 @@ class CategoriesController extends AbstractController
         // je vais chercher la liste des tricks de la catégorie
         
         //$tricks = $category->getTricks();
-        $tricks = $tricksRepository->findTricksPaginated($page, $category->getslug(), 4);
+        $tricks = $tricksRepository->findTricksPaginated($page, $category->getslug(), 2);
 
         //dd($tricks);
         return $this->render('categories/list.html.twig', compact('category', 'tricks'));
