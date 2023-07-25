@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-
 use App\Entity\Categories;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -19,9 +18,7 @@ class CategoriesFixtures extends Fixture
     }            
    
     public function load(ObjectManager $manager): void
-    {
-        //$parent = $this->createCategory('Info',  $manager);
-
+    {       
         $this->createCategory('Big air', $manager);
         $this->createCategory('Hip', $manager);
         $this->createCategory('Step-up', $manager);

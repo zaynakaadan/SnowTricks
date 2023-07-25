@@ -141,6 +141,9 @@ footer a {
     font-size: 22px;
 
 }
+.pagination{
+    margin-top: 25px;
+}
 
 @media screen and (max-width: 800px)
 {

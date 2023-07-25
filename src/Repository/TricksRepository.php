@@ -50,7 +50,7 @@ class TricksRepository extends ServiceEntityRepository
                 return $result;
             }
 
-            // Calcule le nobre de page
+            // Calcule le nombre de page
             $pages = ceil($paginator->count() / $limit);
 
             // Remplit le tableau

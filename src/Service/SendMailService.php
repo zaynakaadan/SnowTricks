@@ -32,11 +32,6 @@ class SendMailService
 
         //Envoie le mail
         $this->mailer->send($email);
-    }
-
-    
-         
-    
-       
+    }                   
     
 }

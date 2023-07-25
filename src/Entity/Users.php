@@ -47,8 +47,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      */
     //private $username;
 
-   
-
     /**
      * @ORM\Column(type="string", length=100)
      */
@@ -77,7 +75,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $resetToken;
+    private $resetToken = '';// Set a default value to an empty string
 
 
 
@@ -258,7 +256,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
             return $this;            
         }
 
-    public function getResetToken():  ?string
+    public function getResetToken(): ?string
     {
         return $this->resetToken;
     }  
@@ -281,7 +279,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->tricks->contains($trick)) {
             $this->tricks[] = $trick;
-            $trick->setRelation($this);
+            //$trick->setRelation($this);
         }
 
         return $this;
