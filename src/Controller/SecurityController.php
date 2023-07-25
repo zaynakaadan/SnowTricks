@@ -111,7 +111,7 @@ class SecurityController extends AbstractController
             // Vérifier si le formulaire a été énvoyé et valide
             if($form->isSubmitted() && $form->isValid()){
             // efface le token
-            $user->setResetToken('');
+            $user->setResetToken(null);
             $user->setPassword(
                 $userPasswordHasherInterface->hashPassword(
                     $user,
