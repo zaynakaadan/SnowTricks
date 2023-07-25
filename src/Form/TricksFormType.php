@@ -11,15 +11,31 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class TricksFormType extends AbstractType
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('name', null, ['label' => 'Nom'])
+        ->add('name', null, [
+            'label' => 'Nom',
+            'constraints' => [
+                new Assert\NotBlank(['message' => 'Le nom du trick ne peut pas être vide']),
+                new Assert\Callback([$this, 'validateUniqueName']),
+            ],
+
+        ])
         ->add('description')
-            //->add('created_at')
         ->add('category', EntityType::class, [ 
             'class' => Categories::class,
              'choice_label' => 'name',
@@ -39,15 +55,25 @@ class TricksFormType extends AbstractType
                     ])
                 )
             ]
-        ])    
-            //->add('user')
-        ;
+        ]);            
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Tricks::class,
+            'constraints' => [
+                new Assert\Callback([$this, 'validateUniqueName']),
+            ],
         ]);
+    }
+    public function validateUniqueName($value, ExecutionContextInterface $context): void
+    {
+        // Vérifier si le nom est unique dans la base de données
+        $existingTrick = $this->entityManager->getRepository(Tricks::class)->findOneBy(['name' => $value]);
+
+        if ($existingTrick) {
+            $context->buildViolation('Ce nom de trick est déjà utilisé.')->addViolation();
+        }
     }
 }
