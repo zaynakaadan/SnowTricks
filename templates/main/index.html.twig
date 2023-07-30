@@ -15,9 +15,13 @@
 
                 <div class="col-12 col-md-6 col-lg-4  mt-3">
                     <div class="card h-100">                   
-                        <div class="card-body">
-                            <h2 class="card-title">{{ category.name }}</h2>                        
-                            <a href="{{ path('categories_list', {slug: category.slug}) }}" class="btn btn-primary">Voir le Trick</a>
+                        <div class="card-body">                                                             
+                            <a href="{{ path('categories_list', {slug: category.slug})}}" class="large-link" >
+                            {{ category.name }}</a>
+                            <div class="btn-group" role="group">
+                                    <a href="{{ path('admin_categories_edit', {'id': category.id })}}" class="btn btn-success"><i class="far fa-edit fa-lg"></i></a>
+                                    <a href="{{ path('admin_categories_delete', {'id': category.id })}}" class="btn btn-danger"><i class="far fa-trash-alt fa-lg"></i></a>
+                            </div>      
                         </div>
                     </div>
                 </div>

@@ -6,9 +6,15 @@
     <main class="container">
         <div class="row mt-4">
             <div class="col-12">
-                <h1>{{ trick.name }}</h1>
+                <div class="card-body">
+                    <h1>{{ trick.name }}</h1>
+                        <div class="btn-group" role="group">
+                            <a href="{{ path('admin_tricks_edit', {'id': trick.id })}}" class="btn btn-success"><i class="far fa-edit fa-lg"></i></a>
+                            <a href="{{ path('admin_tricks_delete', {'id': trick.id })}}" class="btn btn-danger"><i class="far fa-trash-alt fa-lg"></i></a>
+                        </div>                                            
+                </div>
             </div>
-            <div class="col-6">
+            <div class="col-12">
                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
                         {% for iteration in 0..trick.images|length - 1 %}
@@ -32,7 +38,7 @@
                     </button>
                 </div>
             </div>
-            <div class="col-6 description-container">
+            <div class="col-12 description-container  separator">
                 <p><strong>Description :</strong> {{ trick.description }}</p>
                 <p><strong>Catégorie : </strong>{{ trick.category.name }}</p>
                 <p>
@@ -43,8 +49,18 @@
                 </p>
             </div>
         </div>
+        <div class="col-12 separator">                  
+            <h2>Ajouter un commentaire</h2>
+                {{ form_start(commentForm) }}
+                    <div class="mb-3">
+                        {{ form_label(commentForm.content, 'Connectez-vous pour écrire un commentaire', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(commentForm.content, {'attr': {'class': 'form-control', 'rows': 5}}) }}
+                    </div>
+                        <button type="submit" class="btn btn-primary mb-3">Enregistrer</button>
+                {{ form_end(commentForm) }}                
+        </div>
         <div class="row mt-4">
-            <div class="col-12 col-md-6 li-co" >
+            <div class="col-12">
                 <h2>Liste des commentaires</h2>       
                 {% for comment in trick.comments %}
                     <div class="card mb-3">
@@ -60,16 +76,7 @@
                     </div>
                 {% endfor %}
             </div>
-            <div class="col-12 col-md-6">                  
-                <h2>Ajouter un commentaire</h2>
-                {{ form_start(commentForm) }}
-                <div class="mb-3">
-                    {{ form_label(commentForm.content, 'Connectez-vous pour écrire un commentaire', {'label_attr': {'class': 'form-label'}}) }}
-                    {{ form_widget(commentForm.content, {'attr': {'class': 'form-control', 'rows': 5}}) }}
-                </div>
-                    <button type="submit" class="btn btn-primary">Enregistrer</button>
-                {{ form_end(commentForm) }}                
-            </div>
+           
         </div>
     </main>
       <!-- Include the custom scripts.js file -->
