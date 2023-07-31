@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controller;
 
@@ -9,9 +9,12 @@ use App\Entity\Users;
 use App\Form\CommentsFormType;
 use App\Repository\CommentsRepository;
 use App\Repository\TricksRepository;
+
+
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\DateTimeImmutable;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,34 +23,57 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 /**
  * @Route("/tricks", name="tricks_")
  */
 class TricksController extends AbstractController
-{    
-    /**        
+{
+    /**
      * @Route("/", name="index")
      */
-        public function index(): Response
-        {            
-            return $this->render('tricks/index.html.twig');
+    public function index(): Response
+    {
+        return $this->render('tricks/index.html.twig');
+    }
+
+
+    /**
+    * @Route("/load", name="list")
+    */
+    public function getTricks(Request $request, TricksRepository $tricksRepository) {
+        $page = $request->query->get('page');
+        $tricks = $tricksRepository->findTricksPaginated($page, '', 15);
+        $results = [];
+        foreach($tricks['data'] as $t) {
+            $results[] = [
+                "id" => $t->getId(),
+                "name" => $t->getName()
+            ];
         }
+        return new JsonResponse(['tricks' => $results]);
+    }
+
+    public function deleteTrick($id) {
+
+    }
 
 
-    /**        
+    /**
      * @Route("/{slug}", name="details")
-     */      
+     */
       public function details($slug, Tricks $trick,  Request $request, EntityManagerInterface $em,TricksRepository $tricksRepository): Response
-      {   
+      {
 
-        $trick = $tricksRepository->findOneBy(['slug' => $slug]); 
+        $trick = $tricksRepository->findOneBy(['slug' => $slug]);
 
         if(!$trick){
           throw new NotFoundHttpException('Pas de trick trouvée');
         }
         $user = $this->getUser();
         $currentDateTime = $trick->getCreatedAt()->format('Y-m-d H:i:s');
-        //$user = $ui->getUserIdentifier();    
+        //$user = $ui->getUserIdentifier();
 
         //Partie commentaires
         $comment = new Comments;
@@ -68,10 +94,10 @@ class TricksController extends AbstractController
           $data->setUser($this->getUser());
           $em->persist($data);
           $em->flush();
-        
+
         $this->addFlash('success', ' Votre comment a été bien ajouté ');
         return $this->redirectToRoute('tricks_details', ['slug' => $trick->getSlug()]);
-        }  
+        }
         //return $this->render('tricks/details.html.twig', compact('trick', 'user', 'currentDateTime', 'commentForm'));
         return $this->render('tricks/details.html.twig', [
           'trick' => $trick,
@@ -80,5 +106,5 @@ class TricksController extends AbstractController
            'commentForm' => $commentForm->createView()
         ]);
      }
-     
- }    
+
+ }

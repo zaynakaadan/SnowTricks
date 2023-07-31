@@ -16,18 +16,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Show/hide the scroll-up arrow based on the scroll position
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 100) {
+
+        console.log(isLoading)
+        if (isLoading) return
+
+        if (window.scrollY > 100 && scrollUpBtn.style.display != 'block') {
             scrollUpBtn.style.display = 'block';
         } else {
             scrollUpBtn.style.display = 'none';
         }
-       
+
         // Fetch next page when reaching the bottom of the page
         const threshold = 100; // Adjust this value to your preference
         const contentHeight = document.getElementById('content-container').offsetHeight;
         const yOffset = window.pageYOffset + window.innerHeight;
 
-        if (yOffset + threshold > contentHeight) {
+        if (yOffset + threshold > contentHeight && !isLoading) {
             fetchNextPage();
         }
     });
@@ -54,8 +58,9 @@ function fetchNextPage() {
     isLoading = true;
     showLoading();
 
-    const nextPage = currentPage + 1;
-    const url = "{{ path('categories_list', {'slug': category.getslug()}) }}?page=" + nextPage;
+    const nextPage = currentPage;
+    // const url = "{{ path('categories_list', {'slug': category.getslug()}) }}?page=" + nextPage;
+    const url = '/tricks/load?page=' + nextPage
 
     fetch(url, {
         method: 'GET',
@@ -86,7 +91,7 @@ function fetchNextPage() {
     .catch(error => {
         // Handle error if needed
         // Hide the loader and mark loading as complete
-        hideLoading();
-        isLoading = false;
+        // hideLoading();
+        // isLoading = false;
     });
 }

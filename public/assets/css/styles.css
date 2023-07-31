@@ -19,8 +19,8 @@ nav li a{
 }
 .bg-image {
     background-size: cover;
-    height: 500px;
-    width: 100%;
+    /* height: 500px;
+    width: 100%; */
   }
   .img{
     height:45px;
@@ -38,6 +38,12 @@ nav li a{
     padding-right: 248px;
 
 }
+
+header {
+    width: 100%;
+    height: calc(100vh - 40px);
+}
+
 .header-title {
     padding:50px;
     color: black;
@@ -134,24 +140,24 @@ footer a {
 .card-body {
     display: flex;
     justify-content: space-around;
-    
-   
+
+
 }
 
 
 .btn-group .btn.btn-success {
-    margin-right: 5px; 
+    margin-right: 5px;
 }
 .btn-group .btn.btn-danger {
-    margin-right: -26px; 
+    margin-right: -26px;
 }
 .btn-group {
-   display:inline; 
+   display:inline;
 }
 
 .separator {
-    border-bottom: 1px solid #dee2e6; 
-    margin-top: 20px; 
+    border-bottom: 1px solid #dee2e6;
+    margin-top: 20px;
 }
 
 .card-text {
@@ -183,7 +189,7 @@ footer a {
         flex-direction: column; /* Stack elements vertically */
         align-items: center;
         max-width: 720px;
-  
+
     }
 }
 .loader {

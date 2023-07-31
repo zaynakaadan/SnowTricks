@@ -26,39 +26,44 @@ class TricksRepository extends ServiceEntityRepository
         return parent::findAll();
     }
 
-    public function findTricksPaginated(int $page, string $slug, int $limit = 6): array
+    public function findTricksPaginated(int $page, string $slug = '', int $limit = 6): array
     {
-        
+
         $limit = abs($limit);
         $result = [];
 
-        $query = $this->getEntityManager()->createQueryBuilder()
-            ->select('c','t')
+        if ($slug) {
+
+            $query = $this->getEntityManager()->createQueryBuilder()
+                ->select('c','t')
+                ->from('App\Entity\Tricks', 't')
+                ->join('t.category', 'c')
+                ->where("c.slug = '$slug'")
+                ->setMaxResults($limit)
+                ->setFirstResult(($page * $limit) - $limit);
+        } else {
+            $query = $this->getEntityManager()->createQueryBuilder()
+            ->select('t')
             ->from('App\Entity\Tricks', 't')
-            ->join('t.category', 'c')
-            ->where("c.slug = '$slug'")
             ->setMaxResults($limit)
             ->setFirstResult(($page * $limit) - $limit);
+        }
 
-            $paginator = new Paginator($query);
-            //chercher les données
-            $data = $paginator->getQuery()->getResult();
+        $paginator = new Paginator($query);
+        $data = $paginator->getQuery()->getResult();
 
-            //dd($data);
+        if(empty($data)){
+            return $result;
+        }
 
-            //Vérifie que j'ai des données
-            if(empty($data)){
-                return $result;
-            }
+        // Calcule le nombre de page
+        $pages = ceil($paginator->count() / $limit);
 
-            // Calcule le nombre de page
-            $pages = ceil($paginator->count() / $limit);
-
-            // Remplit le tableau
-            $result['data'] = $data;
-            $result['pages'] = $pages;
-            $result['page'] = $page;
-            $result['limit'] = $limit;
+        // Remplit le tableau
+        $result['data'] = $data;
+        $result['pages'] = $pages;
+        $result['page'] = $page;
+        $result['limit'] = $limit;
 
         return $result;
 

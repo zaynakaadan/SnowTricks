@@ -8,27 +8,33 @@
         <strong class="sub-title">BORN TO SNOWBOARD</strong>
     </div>
 </header>
-    <main class="container homepage">
+    <main id="content-container" class="container homepage">
         <section class="row row-section">
 
+            {#
             {% for category in categories %}
 
                 <div class="col-12 col-md-6 col-lg-4  mt-3">
-                    <div class="card h-100">                   
-                        <div class="card-body">                                                             
+                    <div class="card h-100">
+                        <div class="card-body">
                             <a href="{{ path('categories_list', {slug: category.slug})}}" class="large-link" >
                             {{ category.name }}</a>
                             <div class="btn-group" role="group">
                                     <a href="{{ path('admin_categories_edit', {'id': category.id })}}" class="btn btn-success"><i class="far fa-edit fa-lg"></i></a>
                                     <a href="{{ path('admin_categories_delete', {'id': category.id })}}" class="btn btn-danger"><i class="far fa-trash-alt fa-lg"></i></a>
-                            </div>      
+                            </div>
                         </div>
                     </div>
                 </div>
-            {% endfor %}     
+            {% endfor %}
+            #}
         </section>
+        <!-- todo envoyer la varaiable if -->
+        <!-- if tricks.hasNextPage -->
+            <div class="loader" id="loader" style="display: none;"></div>
+        <@-- endif-->
     </main>
 
-    
+
 
 {% endblock %}
