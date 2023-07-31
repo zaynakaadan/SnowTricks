@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List of Tricks{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <h1>List of Tricks</h1>
+        <div class="row">
+            {% for trick in tricks %}
+                <div class="col-12 col-md-6 col-lg-4 mt-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <a href="{{ path('tricks_details', {'slug': trick.slug}) }}" class="large-link">
+                                {{ trick.name }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+{% endblock %}

@@ -1,40 +1,31 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Liste des tricks!{% endblock %}
 
 {% block body %}
-<header class="bg-image" style="background-image: url('/assets/img/HMV_ski-freeride1.jpeg');">
-    <div class="contents-header text-end pr-3">
-        <h1 class="header-title">Site SnowTricks</h1>
-        <strong class="sub-title">BORN TO SNOWBOARD</strong>
-    </div>
-</header>
+    <header class="bg-image" style="background-image: url('/assets/img/HMV_ski-freeride1.jpeg');">
+        <div class="contents-header text-end pr-3">
+            <h1 class="header-title">Site SnowTricks</h1>
+            <strong class="sub-title">BORN TO SNOWBOARD</strong>
+        </div>
+    </header>
+
     <main id="content-container" class="container homepage">
+       
+
         <section class="row row-section">
-
-            {#
-            {% for category in categories %}
-
-                <div class="col-12 col-md-6 col-lg-4  mt-3">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <a href="{{ path('categories_list', {slug: category.slug})}}" class="large-link" >
-                            {{ category.name }}</a>
-                            <div class="btn-group" role="group">
-                                    <a href="{{ path('admin_categories_edit', {'id': category.id })}}" class="btn btn-success"><i class="far fa-edit fa-lg"></i></a>
-                                    <a href="{{ path('admin_categories_delete', {'id': category.id })}}" class="btn btn-danger"><i class="far fa-trash-alt fa-lg"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-            #}
+ 
+            {% for trick in tricks.data %}
+    <div class="col-12 col-md-6 col-lg-4 mt-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <a href="{{ path('tricks_details', {'slug': trick.slug}) }}" class="large-link">
+                    {{ trick.name }}
+                </a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
         </section>
-        <!-- todo envoyer la varaiable if -->
-        <!-- if tricks.hasNextPage -->
-            <div class="loader" id="loader" style="display: none;"></div>
-        <@-- endif-->
     </main>
-
-
-
 {% endblock %}

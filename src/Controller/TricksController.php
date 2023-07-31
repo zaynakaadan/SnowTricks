@@ -24,18 +24,26 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
+use App\Repository\CategoriesRepository;
 /**
  * @Route("/tricks", name="tricks_")
  */
 class TricksController extends AbstractController
 {
+  
     /**
      * @Route("/", name="index")
      */
-    public function index(): Response
+    public function index(CategoriesRepository $categoriesRepository, TricksRepository $tricksRepository): Response
     {
-        return $this->render('tricks/index.html.twig');
+      
+      $categories = $categoriesRepository->findAll();
+        $tricks = $tricksRepository->findAllTricks();
+
+        return $this->render('main/index.html.twig', [
+            'categories' => $categories,
+            'tricks' => $tricks,
+      ]);
     }
 
 
@@ -43,16 +51,9 @@ class TricksController extends AbstractController
     * @Route("/load", name="list")
     */
     public function getTricks(Request $request, TricksRepository $tricksRepository) {
-        $page = $request->query->get('page');
+        $page = $request->query->get('page') ?? 1;
         $tricks = $tricksRepository->findTricksPaginated($page, '', 15);
-        $results = [];
-        foreach($tricks['data'] as $t) {
-            $results[] = [
-                "id" => $t->getId(),
-                "name" => $t->getName()
-            ];
-        }
-        return new JsonResponse(['tricks' => $results]);
+        return $this->render('tricks/load.html.twig', ['tricks' => $tricks['data']]);
     }
 
     public function deleteTrick($id) {

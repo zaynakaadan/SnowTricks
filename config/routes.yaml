@@ -1,3 +1,6 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+tricks_list:
+    path: /load
+    controller: App\Controller\TricksController::getTricks
