@@ -6,7 +6,7 @@ use App\Entity\Tricks;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
-
+use Doctrine\ORM\QueryBuilder;
 /**
  * @extends ServiceEntityRepository<Tricks>
  *
@@ -28,6 +28,7 @@ class TricksRepository extends ServiceEntityRepository
 
     public function findTricksPaginated(int $page, string $slug, int $limit = 6): array
     {
+        
         $limit = abs($limit);
         $result = [];
 

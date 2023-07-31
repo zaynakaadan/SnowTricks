@@ -1,0 +1,16 @@
+{% for trick in tricks.data %}
+  <div class="col-12 col-md-6 col-lg-4 mt-3">
+                    <article class="card h-100 mt-3">
+                      <img src="{{ asset('assets/img/tricks/mini/300x300-' ~ trick.images[0].name ) }}" class="card-img-top" alt="{{ trick.name }}">
+                        <div class="card-body">
+                            
+                            
+                            <a href="{{ path('tricks_details', {"slug": trick.slug}) }}" class="large-link" >{{ trick.name }}</a>
+                            <div class="btn-group" role="group">
+                                    <a href="{{ path('admin_tricks_edit', {'id': trick.id })}}" class="btn btn-success"><i class="far fa-edit fa-lg"></i></a>
+                                    <a href="{{ path('admin_tricks_delete', {'id': trick.id })}}" class="btn btn-danger"><i class="far fa-trash-alt fa-lg"></i></a>
+                            </div> 
+                        </div>
+                    </article>
+                </div>
+{% endfor %}

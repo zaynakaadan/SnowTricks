@@ -4,7 +4,6 @@
 Liste des tricks de la categorie {{ category.name }}
 {% endblock %}
 
-
 {% block body %}
     <main class="container">
         <section class="row row-section">
@@ -12,33 +11,123 @@ Liste des tricks de la categorie {{ category.name }}
                 <h1>Liste des tricks de la categorie {{ category.name }}</h1>
             </div>
 
-{% if tricks is not null and tricks.data is defined and tricks.data|length > 0 %}
-
-            {% for trick  in tricks.data %}
-        
-                <div class="col-12 col-md-6 col-lg-4 mt-3">
-                    <article class="card h-100 mt-3">
-                      <img src="{{ asset('assets/img/tricks/mini/300x300-' ~ trick.images[0].name ) }}" class="card-img-top" alt="{{ trick.name }}">
-                        <div class="card-body">
-                            
-                            
-                            <a href="{{ path('tricks_details', {"slug": trick.slug}) }}" class="large-link" >{{ trick.name }}</a>
-                            <div class="btn-group" role="group">
+            {# Show tricks for regular requests #}
+            {% if not app.request.isXmlHttpRequest %}
+                {% if tricks is not null and tricks.data is defined and tricks.data|length > 0 %}
+                    {% for trick in tricks.data %}
+                        <div class="col-12 col-md-6 col-lg-4 mt-3">
+                        <article class="card h-100 mt-3">
+                            <img src="{{ asset('assets/img/tricks/mini/300x300-' ~ trick.images[0].name ) }}" class="card-img-top" alt="{{ trick.name }}">
+                            <div class="card-body">
+                                <a href="{{ path('tricks_details', {"slug": trick.slug}) }}" class="large-link" >{{ trick.name }}</a>
+                                <div class="btn-group" role="group">
                                     <a href="{{ path('admin_tricks_edit', {'id': trick.id })}}" class="btn btn-success"><i class="far fa-edit fa-lg"></i></a>
                                     <a href="{{ path('admin_tricks_delete', {'id': trick.id })}}" class="btn btn-danger"><i class="far fa-trash-alt fa-lg"></i></a>
-                            </div> 
-                        </div>
-                    </article>
-                </div>
-            {% endfor %}
-            {% set path = 'categories_list' %}
-            {% set slug = category.slug %}
-            {% set pages = tricks.pages %}
-            {% set currentPage = tricks.page %}
-            {% include "_partials/_pagination.html.twig" %}
-            {% else %}
-             <strong>Il n'y a pas de trick dans cette catégorie.</strong>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    {% endfor %}
+
+                    {# Include the partial template for pagination #}
+                    {% include "_partials/_pagination.html.twig" with {
+                        'path': 'categories_list',
+                        'slug': category.slug,
+                        'pages': tricks.pages,
+                        'currentPage': tricks.page,
+                    } %}
+
+                {% else %}
+                    <strong>Il n'y a pas de trick dans cette catégorie.</strong>
+                {% endif %}
             {% endif %}
+
+            {# For AJAX requests, replace content with fetched data #}
+            <div id="content-container">
+                {% if app.request.isXmlHttpRequest %}
+                    {% if tricks is not null and tricks.data is defined and tricks.data|length > 0 %}
+                        {% for trick in tricks.data %}
+                            {# Display fetched tricks here #}
+                            <div class="col-12 col-md-6 col-lg-4 mt-3">
+                                <article class="card h-100 mt-3">
+                                    <img src="{{ asset('assets/img/tricks/mini/300x300-' ~ trick.images[0].name ) }}" class="card-img-top" alt="{{ trick.name }}">
+                                    <div class="card-body">
+                                        <a href="{{ path('tricks_details', {"slug": trick.slug}) }}" class="large-link">{{ trick.name }}</a>
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ path('admin_tricks_edit', {'id': trick.id })}}" class="btn btn-success"><i class="far fa-edit fa-lg"></i></a>
+                                            <a href="{{ path('admin_tricks_delete', {'id': trick.id })}}" class="btn btn-danger"><i class="far fa-trash-alt fa-lg"></i></a>
+                                        </div> 
+                                    </div>
+                                </article>
+                            </div>
+                        {% endfor %}
+
+                        {% if tricks.hasNextPage %}
+                            <div class="loader" id="loader" style="display: none;"></div>
+                        {% endif %}
+                    {% else %}
+                        {# Show a message when no more data is available #}
+                        <strong>No more tricks in this category.</strong>
+                    {% endif %}
+                {% endif %}
+            </div>
         </section>
     </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        let isLoading = false;
+        let currentPage = {{ page|default(1) }};
+
+        function fetchNextPage() {
+            if (isLoading) {
+                return;
+            }
+
+            const loader = document.getElementById('loader');
+            loader.style.display = 'block';
+            isLoading = true;
+
+            // Increment the currentPage variable for fetching the next page
+            currentPage++;
+
+            // Adjust the URL for fetching the next page
+            const url = "{{ path('categories_list', {'slug': category.getslug()}) }}?page=" + currentPage;
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.html) {
+                        // Append fetched data to the content container
+                        $('#content-container').append(data.html);
+                    }
+
+                    // Hide the loader if there is no more data to fetch
+                    if (!data.hasNextPage) {
+                        loader.style.display = 'none';
+                    }
+
+                    isLoading = false;
+                },
+                error: function () {
+                    // Handle error if needed
+                    loader.style.display = 'none';
+                    isLoading = false;
+                }
+            });
+        }
+
+        $(window).on('scroll', function() {
+            const threshold = 2; // Adjust this value to your preference
+            const contentHeight = $('#content-container').height();
+            const yOffset = $(window).scrollTop();
+            const windowHeight = $(window).height();
+
+            if (yOffset + windowHeight > contentHeight - threshold) {
+                fetchNextPage();
+            }
+        });
+    </script>
 {% endblock %}
