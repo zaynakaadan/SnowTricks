@@ -7,25 +7,29 @@
         <div class="contents-header text-end pr-3">
             <h1 class="header-title">Site SnowTricks</h1>
             <strong class="sub-title">BORN TO SNOWBOARD</strong>
+            <a href="#tricks" id="button-start">
+                <img src="/assets/img/arrow-down.png" alt="start">
+            </a>
         </div>
     </header>
 
-    <main id="content-container" class="container homepage">
-       
-
-        <section class="row row-section">
- 
+    <main id="tricks" class="content-container container homepage">
+        <section id="tricks-list-container" class="row row-section row-tricks">
             {% for trick in tricks.data %}
-    <div class="col-12 col-md-6 col-lg-4 mt-3">
-        <div class="card h-100">
-            <div class="card-body">
-                <a href="{{ path('tricks_details', {'slug': trick.slug}) }}" class="large-link">
-                    {{ trick.name }}
-                </a>
-            </div>
-        </div>
-    </div>
-{% endfor %}
+                <div class="col-12 col-md-6 col-lg-4 mt-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <a href="{{ path('tricks_details', {'slug': trick.slug}) }}" class="large-link">
+                                {{ trick.name }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </section>
+        <div id="load-action" class="load-action">
+            <img id="loader" class="loader" src="https://i.gifer.com/ZKZg.gif" style="display: none" alt="loading">
+            <button id="load-button" class="btn btm-primary btn-load">Voir plus de tricks</button>
+        </div>
     </main>
 {% endblock %}

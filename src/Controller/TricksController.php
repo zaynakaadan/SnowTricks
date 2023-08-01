@@ -30,13 +30,13 @@ use App\Repository\CategoriesRepository;
  */
 class TricksController extends AbstractController
 {
-  
+
     /**
      * @Route("/", name="index")
      */
     public function index(CategoriesRepository $categoriesRepository, TricksRepository $tricksRepository): Response
     {
-      
+
       $categories = $categoriesRepository->findAll();
         $tricks = $tricksRepository->findAllTricks();
 
@@ -48,11 +48,12 @@ class TricksController extends AbstractController
 
 
     /**
-    * @Route("/load", name="list")
+    * @Route("/load", name="load")
     */
     public function getTricks(Request $request, TricksRepository $tricksRepository) {
         $page = $request->query->get('page') ?? 1;
         $tricks = $tricksRepository->findTricksPaginated($page, '', 15);
+        // var_dump($tricks);
         return $this->render('tricks/load.html.twig', ['tricks' => $tricks['data']]);
     }
 
@@ -107,5 +108,30 @@ class TricksController extends AbstractController
            'commentForm' => $commentForm->createView()
         ]);
      }
+
+      /**
+     * @Route("/comment", name="comment", methods={"GET"})
+     */
+    public function comment(Request $request, TricksRepository $tricksRepository) {
+        $commentText= $request->get('comment');
+        // save the comment
+    }
+
+    /**
+     * @Route("/comment/{id}", name="editcomment", methods={"PUT", "POST"})
+     */
+    public function editcomment(Request $request, TricksRepository $tricksRepository) {
+        $commentText= $request->get('comment');
+        // save the comment
+    }
+
+     /**
+     * @Route("/comment/{id}", name="deletecomment", methods={"DELETE"})
+     */
+    public function deletecomment(Request $request, TricksRepository $tricksRepository) {
+        $commentText= $request->get('comment');
+        // save the comment
+    }
+
 
  }

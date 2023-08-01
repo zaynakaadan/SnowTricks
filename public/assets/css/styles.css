@@ -11,6 +11,41 @@ nav li a{
     font-size: 20px !important;
 }
 
+.bg-image {
+    position: relative;
+}
+
+#button-start {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+#button-start img {
+    width: 60px;
+    height: auto;
+}
+
+.load-action {
+    width: 100%;;
+    text-align: center;
+}
+
+.btn {
+    margin: 15px auto;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border-radius: 10px;
+    border: none;
+}
+
+.row-tricks {
+    padding: 80px 10px;
+}
+
+/* small screen */
+
 @media screen and (max-width: 575.98px)
 {
     .li_f{
@@ -19,6 +54,7 @@ nav li a{
 }
 .bg-image {
     background-size: cover;
+    background-position: top center;
     /* height: 500px;
     width: 100%; */
   }
@@ -175,6 +211,9 @@ footer a {
 .pagination{
     margin-top: 25px;
 }
+
+/* Desktop */
+
 
 @media screen and (max-width: 800px)
 {
