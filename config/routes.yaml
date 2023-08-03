@@ -4,3 +4,4 @@
 tricks_list:
     path: /load
     controller: App\Controller\TricksController::getTricks
+
