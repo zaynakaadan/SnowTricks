@@ -2,29 +2,31 @@
 
 namespace App\Controller;
 
-use App\Entity\Comments;
-use App\Entity\MyTrait\CreatedAtTrait;
-use App\Entity\Tricks;
+use id;
 use App\Entity\Users;
-use App\Form\CommentsFormType;
-use App\Repository\CommentsRepository;
-use App\Repository\TricksRepository;
-
-
+use App\Entity\Tricks;
 use DateTimeInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Comments;
+use App\Form\CommentsFormType;
 use Monolog\DateTimeImmutable;
-use phpDocumentor\Reflection\DocBlock\Tags\Var_;
+
+
+use App\Form\EditCommentFormType;
+use App\Repository\TricksRepository;
+use App\Entity\MyTrait\CreatedAtTrait;
+use App\Repository\CommentsRepository;
+use App\Repository\CategoriesRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints\DateTime;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use App\Repository\CategoriesRepository;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 /**
  * @Route("/tricks", name="tricks_")
  */
@@ -112,25 +114,99 @@ class TricksController extends AbstractController
       /**
      * @Route("/comment", name="comment", methods={"GET"})
      */
-    public function comment(Request $request, TricksRepository $tricksRepository) {
-        $commentText= $request->get('comment');
-        // save the comment
+    public function comment(Request $request, Tricks $trick, TricksRepository $tricksRepository, EntityManagerInterface $em) {
+        //$commentText= $request->get('comment');
+        $trickId = $request->query->get('trick_id');
+        $trick = $tricksRepository->find($trickId);
+
+        //Partie commentaires
+        $comment = new Comments;
+        // Crée le formulaire
+        $commentForm = $this->createForm(CommentsFormType::class, $comment);
+
+        $commentForm->handleRequest($request);
+
+        // Vérifie si le formulaire est soumis et valide
+        if($commentForm->isSubmitted() && $commentForm->isValid()){
+          
+          //dd($comment);
+          if (!$this->getUser()) {
+            throw new AccessDeniedException('Vous devez être connecté pour ajouter un commentaire.');
+        }
+          $comment->setTrick($trick);
+          $data = $commentForm->getData();
+          
+            // Attribuer l' utilisateur à la propriété de l'entité
+          $data->setUser($this->getUser());
+          $em->persist($data);
+          $em->flush();
+
+        $this->addFlash('success', ' Votre comment a été bien ajouté ');
+        return $this->redirectToRoute('tricks_details', ['slug' => $trick->getSlug()]);
+        }
+        $user = $this->getUser();
+        $currentDateTime = $trick->getCreatedAt()->format('Y-m-d H:i:s');
+        //return $this->render('tricks/details.html.twig', compact('trick', 'user', 'currentDateTime', 'commentForm'));
+        return $this->render('tricks/details.html.twig', [
+          'trick' => $trick,
+           'user' => $user,
+           'currentDateTime' => $currentDateTime,
+           'commentForm' => $commentForm->createView()
+        ]);
     }
 
     /**
-     * @Route("/comment/{id}", name="editcomment", methods={"PUT", "POST"})
+     * @Route("/comment/{id}", name="editcomment", methods={"GET","PUT", "POST"})
      */
-    public function editcomment(Request $request, TricksRepository $tricksRepository) {
-        $commentText= $request->get('comment');
-        // save the comment
+    public function editcomment(Request $request,$id, Comments $comment, Tricks $trick, EntityManagerInterface $entityManager, TricksRepository $tricksRepository) {
+       // $commentText= $request->get('comment'); 
+       $trick = $tricksRepository->find($id);
+    if (!$trick) {
+        throw $this->createNotFoundException('Objet Tricks introuvable avec l id.');
+    }
+      
+                // Crée le formulaire
+                $commentForm = $this->createForm(EditCommentFormType::class, $comment );
+
+                // Traite la requete du formulaire
+                $commentForm->handleRequest($request);
+                //dd($trickForm);
+        
+                // Vérifie si le formulaire est soumis et valide
+                if($commentForm->isSubmitted() && $commentForm->isValid()){                                         
+                    // Stoker les information dans bdd
+        
+            $entityManager->flush();
+                    $this->addFlash('success', 'Comment modifié avec succès');
+        
+                    // Redirige 
+                    return $this->redirectToRoute('tricks_index');        
+                }
+        
+                return $this->render('comments/edit.html.twig', [
+                    'commentForm'=> $commentForm->createView(),
+                    'comment' => $comment, 
+                    'trick' => $trick,
+                ]);      
     }
 
      /**
      * @Route("/comment/{id}", name="deletecomment", methods={"DELETE"})
      */
-    public function deletecomment(Request $request, TricksRepository $tricksRepository) {
-        $commentText= $request->get('comment');
-        // save the comment
+    public function deletecomment(Request $request,Comments $comment, TricksRepository $tricksRepository,EntityManagerInterface $entityManager, CommentsRepository $commentsRepository) {
+       // $commentText= $request->get('comment');
+        // save the comment       
+   
+           
+          // Supprimer le comment entity
+              $entityManager->remove($comment);
+              $entityManager->flush();
+              $this->addFlash('success', 'Comment à été supprimé ');
+            
+           return $this->redirectToRoute('admin_tricks_index');  
+          
+              return $this->redirectToRoute('admin_tricks_index');  
+          
     }
 
 

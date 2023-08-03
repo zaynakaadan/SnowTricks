@@ -70,6 +70,10 @@
                                 <img src="https://i.pravatar.cc/300" alt="{{ comment.user.lastname }} Avatar" class="avatar-img">  
                                 </div>                              
                                 <h5 class="card-title comment-content">{{ comment.content }}</h5>
+                                <div class="btn-group d-flex" role="group">
+                                            <a href="{{ path('tricks_editcomment', {'id': comment.id })}}" class="btn btn-success"><i class="far fa-edit fa-lg"></i></a>
+                                            <a href="{{ path('tricks_deletecomment', {'id': comment.id })}}" class="btn btn-danger"><i class="far fa-trash-alt fa-lg"></i></a>
+                                        </div> 
                                 <p class="card-text">Publié par {{ comment.user.lastname }} {{ comment.user.firstname }}, le {{ comment.createdAt | date('d/m/Y à H:i') }}</p>
                             </div>
                         </div>
