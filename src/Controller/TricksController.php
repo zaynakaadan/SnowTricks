@@ -193,19 +193,24 @@ class TricksController extends AbstractController
      /**
      * @Route("/comment/{id}", name="deletecomment", methods={"DELETE"})
      */
-    public function deletecomment(Request $request,Comments $comment, TricksRepository $tricksRepository,EntityManagerInterface $entityManager, CommentsRepository $commentsRepository) {
-       // $commentText= $request->get('comment');
+    public function deletecomment( $id,Comments $comment, EntityManagerInterface $entityManager,CommentsRepository $commentsRepository) {
+        //$commentText= $request->get('comment');
         // save the comment       
-   
-           
-          // Supprimer le comment entity
+      // Find the comment entity by its ID
+    $comment = $commentsRepository->find($id);
+
+    if (!$comment) {
+        throw $this->createNotFoundException('Comment not found with the provided ID.');
+    }
+        
+          // Supprimer le comment 
               $entityManager->remove($comment);
               $entityManager->flush();
               $this->addFlash('success', 'Comment à été supprimé ');
             
-           return $this->redirectToRoute('admin_tricks_index');  
+           return $this->redirectToRoute('tricks_index');  
           
-              return $this->redirectToRoute('admin_tricks_index');  
+             
           
     }
 
