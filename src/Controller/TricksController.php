@@ -128,14 +128,14 @@ class TricksController extends AbstractController
 
         // Vérifie si le formulaire est soumis et valide
         if($commentForm->isSubmitted() && $commentForm->isValid()){
-          
+
           //dd($comment);
           if (!$this->getUser()) {
             throw new AccessDeniedException('Vous devez être connecté pour ajouter un commentaire.');
         }
           $comment->setTrick($trick);
           $data = $commentForm->getData();
-          
+
             // Attribuer l' utilisateur à la propriété de l'entité
           $data->setUser($this->getUser());
           $em->persist($data);
@@ -158,36 +158,39 @@ class TricksController extends AbstractController
     /**
      * @Route("/comment/{id}", name="editcomment", methods={"GET","PUT", "POST"})
      */
-    public function editcomment(Request $request,$id, Comments $comment, Tricks $trick, EntityManagerInterface $entityManager, TricksRepository $tricksRepository) {
-       // $commentText= $request->get('comment'); 
-       $trick = $tricksRepository->find($id);
-    if (!$trick) {
-        throw $this->createNotFoundException('Objet Tricks introuvable avec l id.');
-    }
-      
+    public function editcomment(Request $request, $id, EntityManagerInterface $entityManager, TricksRepository $tricksRepository, CommentsRepository $commentsRepository) {
+
+       // $commentText= $request->get('comment');
+       $comment = $commentsRepository->find($id);
+       // $trick = $tricksRepository->find($id);
+       $trick = $comment->getTrick();
+        if (!$trick) {
+            throw $this->createNotFoundException('Objet Tricks introuvable avec l id.');
+        }
+
                 // Crée le formulaire
                 $commentForm = $this->createForm(EditCommentFormType::class, $comment );
 
                 // Traite la requete du formulaire
                 $commentForm->handleRequest($request);
                 //dd($trickForm);
-        
+
                 // Vérifie si le formulaire est soumis et valide
-                if($commentForm->isSubmitted() && $commentForm->isValid()){                                         
+                if($commentForm->isSubmitted() && $commentForm->isValid()){
                     // Stoker les information dans bdd
-        
+
             $entityManager->flush();
                     $this->addFlash('success', 'Comment modifié avec succès');
-        
-                    // Redirige 
-                    return $this->redirectToRoute('tricks_index');        
+
+                    // Redirige
+                    return $this->redirectToRoute('tricks_index');
                 }
-        
-                return $this->render('comments/edit.html.twig', [
+
+                return $this->render('admin/users/comments/edit.html.twig', [
                     'commentForm'=> $commentForm->createView(),
-                    'comment' => $comment, 
+                    'comment' => $comment,
                     'trick' => $trick,
-                ]);      
+                ]);
     }
 
      /**
@@ -195,23 +198,23 @@ class TricksController extends AbstractController
      */
     public function deletecomment( $id,Comments $comment, EntityManagerInterface $entityManager,CommentsRepository $commentsRepository) {
         //$commentText= $request->get('comment');
-        // save the comment       
+        // save the comment
       // Find the comment entity by its ID
     $comment = $commentsRepository->find($id);
 
     if (!$comment) {
         throw $this->createNotFoundException('Comment not found with the provided ID.');
     }
-        
-          // Supprimer le comment 
+
+          // Supprimer le comment
               $entityManager->remove($comment);
               $entityManager->flush();
               $this->addFlash('success', 'Comment à été supprimé ');
-            
-           return $this->redirectToRoute('tricks_index');  
-          
-             
-          
+
+           return $this->redirectToRoute('tricks_index');
+
+
+
     }
 
 
