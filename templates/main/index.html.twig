@@ -14,13 +14,18 @@
     </header>
 
     <main id="tricks" class="content-container container homepage">
-        <section id="tricks-list-container" class="row row-section row-tricks">
+        <section id="tricks-list-container" class="row row-section row-tricks">                
             {% for trick in tricks.data %}
                 <div class="col-12 col-md-6 col-lg-4 mt-3">
                                 <article class="card h-100 mt-3">
-                                    <img src="{{ asset('assets/img/tricks/mini/300x300-' ~ trick.images[0].name ) }}" class="card-img-top" alt="{{ trick.name }}">
+                                {% set firstImage = trick.images[0] | default(null) %}
+                                {% if firstImage %}
+                                    <img src="{{ asset('assets/img/tricks/mini/300x300-'  ~ firstImage.name ) }}" class="card-img-top" alt="{{ trick.name }}">
+                                     {% else %}
+                                     <img src="{{ asset('assets/img/tricks/mini/300x300') }}" class="card-img-top" alt="Default Image">
+                                     {% endif %}
                                     <div class="card-body">
-                                        <a href="{{ path('tricks_details', {"slug": trick.slug}) }}" class="large-link p-3">{{ trick.name }}</a>
+                                        <a href="{{ path('tricks_details', {"slug": trick.slug  }) }}" class="large-link p-3">{{ trick.name }}</a>
                                         <div class="btn-group" role="group">
                                             <a href="{{ path('admin_tricks_edit', {'id': trick.id })}}" class="btn btn-success"><i class="far fa-edit fa-lg"></i></a>
                                             <a href="{{ path('admin_tricks_delete', {'id': trick.id })}}" class="btn btn-danger"><i class="far fa-trash-alt fa-lg"></i></a>
@@ -28,7 +33,11 @@
                                     </div>
                                 </article>
                             </div>
+                         
+                {% else %}
+                    <strong>Il n'y a pas de trick dans cette catégorie.</strong>                   
             {% endfor %}
+
         </section>
         <div id="load-action" class="load-action">
             <img id="loader" class="loader" src="https://i.gifer.com/ZKZg.gif"  alt="loading">

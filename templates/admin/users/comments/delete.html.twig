@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration des comments!{% endblock %}
+{% block body %}
+    <main class="container">
+        <section class="row">
+            <div class="col-12">
+                <h1>Supprimer un  commentaire</h1>
+                {% for comment in user.comments %}
+                    <p>Commentaire: {{ comment.content }}</p>
+                {% endfor %}
+                {% include "admin/users/comments/_form.html.twig" with { 'commentForm': commentForm } %}
+            </div>   
+        </section>  
+    </main>       
+{% endblock %}

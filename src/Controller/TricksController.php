@@ -10,7 +10,7 @@ use App\Entity\Comments;
 use App\Form\CommentsFormType;
 use Monolog\DateTimeImmutable;
 
-
+use App\Repository\UsersRepository;
 use App\Form\EditCommentFormType;
 use App\Repository\TricksRepository;
 use App\Entity\MyTrait\CreatedAtTrait;
@@ -158,10 +158,11 @@ class TricksController extends AbstractController
     /**
      * @Route("/comment/{id}", name="editcomment", methods={"GET","PUT", "POST"})
      */
-    public function editcomment(Request $request, $id, EntityManagerInterface $entityManager, TricksRepository $tricksRepository, CommentsRepository $commentsRepository) {
-
+    public function editcomment(Request $request, $id, EntityManagerInterface $entityManager, TricksRepository $tricksRepository, CommentsRepository $commentsRepository, UsersRepository $usersRepository) {
+ 
        // $commentText= $request->get('comment');
        $comment = $commentsRepository->find($id);
+       $user = $comment->getUser();
        // $trick = $tricksRepository->find($id);
        $trick = $comment->getTrick();
         if (!$trick) {
@@ -177,6 +178,8 @@ class TricksController extends AbstractController
 
                 // Vérifie si le formulaire est soumis et valide
                 if($commentForm->isSubmitted() && $commentForm->isValid()){
+                 // $trick = $commentForm->get('trick')->getData();
+                  $comment->setTrick($trick);
                     // Stoker les information dans bdd
 
             $entityManager->flush();
@@ -190,11 +193,12 @@ class TricksController extends AbstractController
                     'commentForm'=> $commentForm->createView(),
                     'comment' => $comment,
                     'trick' => $trick,
+                    'user' => $user,
                 ]);
     }
 
      /**
-     * @Route("/comment/{id}", name="deletecomment", methods={"DELETE"})
+     * @Route("/commentdelete/{id}", name="deletecomment", methods={"GET", "DELETE"})
      */
     public function deletecomment( $id,Comments $comment, EntityManagerInterface $entityManager,CommentsRepository $commentsRepository) {
         //$commentText= $request->get('comment');
@@ -203,7 +207,7 @@ class TricksController extends AbstractController
     $comment = $commentsRepository->find($id);
 
     if (!$comment) {
-        throw $this->createNotFoundException('Comment not found with the provided ID.');
+        throw $this->createNotFoundException('Objet comments introuvable avec l id..');
     }
 
           // Supprimer le comment

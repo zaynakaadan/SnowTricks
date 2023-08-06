@@ -24,7 +24,15 @@
                         {% for trick in tricks %}
                             <tr>
                                 <td>{{ trick.id }}</td>
-                                <td><img src="{{ asset('assets/img/tricks/mini/300x300-' ~ trick.images[0].name ) }}" alt="{{ trick.name }}" class="img-thumbnail"></td>
+                                <td>
+                                    {% set firstImage = trick.images[0] | default(null) %}
+                                    {% if firstImage %}
+                                    <img src="{{ asset('assets/img/tricks/mini/300x300-' ~ firstImage.name ) }}" alt="{{ trick.name }}" class="img-thumbnail">
+                                    {% else %}
+                                    <!-- Display a default image or placeholder if 'images' is empty -->
+                                    <img src="{{ asset('assets/img/tricks/mini/300x300') }}" alt="Default Image" class="img-thumbnail">
+                                    {% endif %}
+                                    </td>
                                 <td>{{ trick.user.lastname }} {{ trick.user.firstname }}</td>                                 
                                 <td>{{ trick.name }}</td>  
                                 <td>{{ trick.createdAt | date('d/m/Y à H:i') }}</td>        

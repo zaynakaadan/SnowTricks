@@ -65,9 +65,8 @@ Liste des tricks de la categorie {{ category.name }}
                         {% if tricks.hasNextPage %}
                             <div class="loader" id="loader" style="display: none;"></div>
                         {% endif %}
-                    {% else %}
-                        {# Show a message when no more data is available #}
-                        <strong>No more tricks in this category.</strong>
+                    {% else %}                       
+                        <strong>Il n'y a pas de trick dans cette catégorie.</strong>
                     {% endif %}
                 {% endif %}
             </div>
